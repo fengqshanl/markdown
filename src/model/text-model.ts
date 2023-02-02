@@ -15,7 +15,7 @@ export class TextModel extends EventEmitter {
   protected spacers_: string;
   protected textChangeEmit_: () => void;
 
-  constructor (spacers?: string) {
+  constructor(spacers?: string) {
     super();
     this.spacers_ = spacers || '';
     this.textChangeEmit_ = debounce(() => {
@@ -23,11 +23,11 @@ export class TextModel extends EventEmitter {
     });
   }
 
-  getSpacer () {
+  getSpacer() {
     return this.spacers_;
   }
 
-  getLength () {
+  getLength() {
     return this.spacers_.length;
   }
 
@@ -40,7 +40,7 @@ export class TextModel extends EventEmitter {
   remove(startIndex: number, endIndex: number) {
     const originalSpacers = this.spacers_;
     if (startIndex > endIndex) {
-      [ startIndex, endIndex ] = [ endIndex, startIndex];
+      [startIndex, endIndex] = [endIndex, startIndex];
     }
     this.spacers_ = originalSpacers.slice(0, startIndex) + originalSpacers.slice(endIndex);
     this.textChangeEmit_();
@@ -48,22 +48,24 @@ export class TextModel extends EventEmitter {
   }
 
   /** 获取坐标所在行的坐标前面的内容 */
-  getLineByIndex (index: number) {
+  getLineByIndex(index: number) {
     index--;
     let line = '';
-    while (index >=0 && this.spacers_[index] !== '\n') {
+    // TODO 有必要判断 不是  \n 么 ? 
+    // TODO 这是获取的整行内容还是整段落的内容 ?
+    while (index >= 0 && this.spacers_[index] !== '\n') {
       line = this.spacers_[index] + line;
       index--
     }
     return line;
   }
 
-  setContent (spacers: string) {
+  setContent(spacers: string) {
     this.spacers_ = spacers;
     this.textChangeEmit_();
   }
 
-  clear () {
+  clear() {
     this.spacers_ = '';
     this.textChangeEmit_();
   }

@@ -264,6 +264,7 @@ export class Editor {
           }
           const completeResult = this.markdownStringCompleter_.complete({ line });
           if (completeResult) {
+            // TODO 下面这句话什么意思
             // 列表回车时需要回退上一级tab，因此实际是行首的tab，如当前是一级tab，则删除列表符合
             if (completeResult.needDeleteTab) {
               needDelete = preLen ? [0, 1] : [0, line.length];

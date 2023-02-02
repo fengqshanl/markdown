@@ -1,0 +1,37 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "markdown",
+  "steps": [
+    {
+      "file": "src/markdown-parse/markdown-parser-block/index.ts",
+      "description": "md2html in",
+      "line": 62
+    },
+    {
+      "file": "src/markdown-parse/markdown-parser-block/index.ts",
+      "description": "document node",
+      "line": 27
+    },
+    {
+      "file": "src/event/index.ts",
+      "description": "register event",
+      "line": 12
+    },
+    {
+      "file": "src/markdown-parse/node/node.ts",
+      "description": "MNode",
+      "line": 39
+    },
+    {
+      "file": "src/markdown-parse/markdown-block-creater/factory.ts",
+      "description": "creater factory",
+      "line": 17
+    },
+    {
+      "file": "src/editor.ts",
+      "description": "editor modal",
+      "line": 27
+    }
+  ],
+  "ref": "master"
+}

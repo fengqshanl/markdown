@@ -8,10 +8,10 @@ import { Editor, Operation, SetSelectionOperation, RemoveTextOperation, InsertTe
 import { UndoRedoEditor, History } from "./undo-redo-editor";
 import { debounce } from '../../utils/debounce'
 
-
+// undo 撤销 redo 重做
 
 export const withUndoRedo = <T extends Editor>(editor: T) => {
-  
+
   const undoRedoEditor = editor as T & UndoRedoEditor;
   const apply = editor.apply.bind(editor);
   const clearContent = editor.clearContent.bind(editor);
@@ -91,7 +91,7 @@ export const withUndoRedo = <T extends Editor>(editor: T) => {
       history.undos = [];
       history.redos = [];
     }, 300);
-   
+
   }
 
   undoRedoEditor.setContent = (content: string) => {
@@ -146,38 +146,38 @@ const shouldClear = (op: Operation): boolean => {
 }
 
 const addHistory = debounce((operations: Operation[], history: History) => {
-    // if (operations instanceof SetSelectionOperation) {
-    //   return
-    // }
-    const { undos } = history;
-    let lastBatch = undos[undos.length - 1];
-    let lastBatchOp = lastBatch && lastBatch[lastBatch.length - 1];
-    let sameBatch = false;
-    for (let op of operations) {
-      let overwrite = false;
-      // 将连续的选区变动合并，减少消耗,同时这里涉及到撤销时光标跟随的逻辑
-      if (op instanceof SetSelectionOperation && lastBatchOp && lastBatchOp instanceof SetSelectionOperation) {
-        op = SetSelectionOperation.merge(lastBatchOp, op);
-        overwrite = true;
-      }
-      if (sameBatch || overwrite) {
-        if (overwrite) {
-          lastBatch.pop()
-        }
-        lastBatch.push(op);
-      } else {
-        lastBatch = [op];
-        undos.push(lastBatch);
-        sameBatch = true; // 超过节流时间强制合并
-      }
-      lastBatchOp = op;
-      if (shouldClear(op)) {
-        history.redos = [];
-      }
+  // if (operations instanceof SetSelectionOperation) {
+  //   return
+  // }
+  const { undos } = history;
+  let lastBatch = undos[undos.length - 1];
+  let lastBatchOp = lastBatch && lastBatch[lastBatch.length - 1];
+  let sameBatch = false;
+  for (let op of operations) {
+    let overwrite = false;
+    // 将连续的选区变动合并，减少消耗,同时这里涉及到撤销时光标跟随的逻辑
+    if (op instanceof SetSelectionOperation && lastBatchOp && lastBatchOp instanceof SetSelectionOperation) {
+      op = SetSelectionOperation.merge(lastBatchOp, op);
+      overwrite = true;
     }
-    // TODO 可以考虑放异步
-    while (undos.length > 100) {
-      undos.shift();
+    if (sameBatch || overwrite) {
+      if (overwrite) {
+        lastBatch.pop()
+      }
+      lastBatch.push(op);
+    } else {
+      lastBatch = [op];
+      undos.push(lastBatch);
+      sameBatch = true; // 超过节流时间强制合并
     }
-    operations.length = 0;
+    lastBatchOp = op;
+    if (shouldClear(op)) {
+      history.redos = [];
+    }
+  }
+  // TODO 可以考虑放异步
+  while (undos.length > 100) {
+    undos.shift();
+  }
+  operations.length = 0;
 }, 300);

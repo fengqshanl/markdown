@@ -105,15 +105,13 @@ export class Editor {
 
   /** 在光标或者选区处插入字符串 */
   insertTextAtCursor(text: string) {
-    console.log("insert text at cursor: 1", text);
+    // 自动补齐
     const enterComplete = this.beforeInsert(text);
-    console.log("insert text at cursor: 2", enterComplete);
     text = enterComplete.input;
     if (!text.length) {
       return;
     }
     const selection = this.selectionModel_.getSelection();
-    console.log("insert text at cursor: 3", selection);
     let startIndex = selection.anchor;
     if (!this.selectionModel_.isCollapsed()) {
       this.apply(new RemoveTextOperation(selection.anchor, selection.focus));

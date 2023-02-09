@@ -114,6 +114,7 @@ export class KeyboardEventHandler extends BaseEventHandler {
     const compositionEndHandlerBinder = this.compositionEndHandler.bind(this);
     this.target.addEventListener('beforeinput', beforeInputHandlerBinder);
     this.target.addEventListener('keydown', keydownHandlerBinder);
+    // 切换为 中文输入法时 触发 该 事件
     this.target.addEventListener('compositionstart', compositionStartHandlerBinder);
     this.target.addEventListener('compositionend', compositionEndHandlerBinder);
 

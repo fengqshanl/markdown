@@ -23,24 +23,25 @@ export class SelectionModel extends EventEmitter {
   protected eventTimer_: number | null;
   protected selectionChangeEmit_: () => void;
 
-  constructor (textModel: TextModel) {
+  constructor(textModel: TextModel) {
     super();
     this.textModel_ = textModel;
     this.selection_ = { anchor: 0, focus: 0 };
     this.selectionChangeEmit_ = debounce(() => {
+      console.log("selection - change - emit");
       this.emit(SelectionModel.EVENT_TYPE.SELECTION_CHANGE);
     }, 100);
   }
   /** 判断两个选区模型是否是同一块区域 */
-  static isEqual (selection1: SelectionCustom, selection2: SelectionCustom) {
+  static isEqual(selection1: SelectionCustom, selection2: SelectionCustom) {
     return selection1.anchor === selection2.anchor && selection1.focus === selection2.focus;
   }
 
-  getSelection () {
+  getSelection() {
     return { ...this.selection_ } as SelectionCustom;
   }
 
-  setSelection (selection: SelectionCustom | null) {
+  setSelection(selection: SelectionCustom | null) {
     if (selection && this.selection_ && selection.anchor === this.selection_.anchor && selection.focus === this.selection_.focus) {
       return;
     }
@@ -50,11 +51,11 @@ export class SelectionModel extends EventEmitter {
     // this.selectionChangeEmit_();
   }
 
-  isCollapsed () {
+  isCollapsed() {
     return this.selection_ && this.selection_.anchor === this.selection_.focus;
   }
 
-  isBackward () {
+  isBackward() {
     return this.selection_ && this.selection_.anchor > this.selection_.focus;
   }
 
@@ -69,7 +70,7 @@ export class SelectionModel extends EventEmitter {
   // }
 
   /** 移动光标位置，负数为后退，正数为前进 */
-  move (n: number) {
+  move(n: number) {
 
   }
 

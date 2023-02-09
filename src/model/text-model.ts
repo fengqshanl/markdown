@@ -19,6 +19,7 @@ export class TextModel extends EventEmitter {
     super();
     this.spacers_ = spacers || '';
     this.textChangeEmit_ = debounce(() => {
+      console.log("text - change - emit");
       this.emit(TextModel.EVENT_TYPE.TEXT_CHANGE);
     });
   }
